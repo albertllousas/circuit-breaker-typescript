@@ -1,0 +1,15 @@
+{
+  "name": "circuit-breaker-typescript",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build" : "tsc"
+  },
+  "author": "albert.llousas@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^3.4.1"
+  }
+}
