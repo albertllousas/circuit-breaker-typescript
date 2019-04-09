@@ -1,0 +1,28 @@
+{
+    "defaultSeverity": "error",
+    "extends": ["tslint:recommended"],
+    "jsRules": {},
+    "rules": {
+        "arrow-parens": [true, "ban-single-arg-parens"],
+        "ban-types": false,
+        "catch-clause-parameter": [true, "err"],
+        "interface-name": [true, "never-prefix"],
+        "interface-over-type-literal": false,
+        "member-ordering": false,
+        "no-console": false,
+        "no-string-literal": false,
+        "object-literal-key-quotes": [true, "as-needed"],
+        "object-literal-sort-keys": false,
+        "prefer-for-of": false,
+        "max-classes-per-file": [true, 10, "exclude-class-expressions"],
+        "quotemark": [true, "single", "jsx-double"],
+        "semicolon": [true, "always", "ignore-bound-class-methods"],
+        "trailing-comma": [
+            true,
+            {
+                "esSpecCompliant": true
+            }
+        ]
+    },
+    "rulesDirectory": []
+}

@@ -5,8 +5,9 @@
     "declaration": true,
     "outDir": "./lib",
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "lib": ["dom", "es2018", "esnext.asynciterable"]
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "**/__tests__/*"]
 }
