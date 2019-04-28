@@ -1,7 +1,7 @@
 const nowSupplier = () => new Date();
 
 class ClosedCircuit {
-    private constructor(readonly failCount: number = 0) {}
+    constructor(readonly failCount: number = 0) {}
 
     public static start = () => new ClosedCircuit();
     public reset = () => new ClosedCircuit();

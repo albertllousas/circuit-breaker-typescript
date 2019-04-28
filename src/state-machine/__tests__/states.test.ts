@@ -9,7 +9,7 @@ describe('Circuit breaker states', () => {
             const closed = ClosedCircuit.start();
 
             expect(closed).toBeInstanceOf(ClosedCircuit);
-            expect(closed).toMatchObject({failCount: 0, startedAt: now});
+            expect(closed).toMatchObject({failCount: 0});
         });
 
         it('should increase the error counter', () => {
