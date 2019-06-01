@@ -1,25 +1,38 @@
 const nowSupplier = () => new Date();
 
-class ClosedCircuit {
-    constructor(readonly failCount: number = 0) {}
+abstract class CircuitBreakerState {
+    public abstract isCallPermitted(): boolean;
+}
+
+class ClosedCircuit extends CircuitBreakerState {
+    constructor(readonly failCount: number = 0) {
+        super();
+    }
 
     public static start = () => new ClosedCircuit();
     public reset = () => new ClosedCircuit();
     public increaseFails = () => new ClosedCircuit(this.failCount + 1);
     public trip = (now = nowSupplier()) => new OpenCircuit(now);
+    public isCallPermitted = () => true;
 }
 
-class OpenCircuit {
-    constructor(readonly openedAt: Date) {}
+class OpenCircuit extends CircuitBreakerState {
+    constructor(readonly openedAt: Date) {
+        super();
+    }
 
     public tryReset = () => new HalfOpenCircuit();
+    public isCallPermitted = () => false;
 }
 
-class HalfOpenCircuit {
+class HalfOpenCircuit extends CircuitBreakerState {
+    constructor() {
+        super();
+    }
+
     public trip = (now = nowSupplier()) => new OpenCircuit(now);
     public reset = () => ClosedCircuit.start();
+    public isCallPermitted = () => true;
 }
-
-type CircuitBreakerState = ClosedCircuit | OpenCircuit | HalfOpenCircuit;
 
 export {CircuitBreakerState, ClosedCircuit, OpenCircuit, HalfOpenCircuit};
