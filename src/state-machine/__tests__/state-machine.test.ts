@@ -1,54 +1,49 @@
-import CircuitBreakerStateMachine from '../state-machine';
+import {CircuitBreakerStateMachine} from '../state-machine';
 import {ClosedCircuit, HalfOpenCircuit, OpenCircuit} from '../states';
 
 describe('Circuit breaker state machine', () => {
 
     const noop = jest.fn();
-    const successCall = () => Promise.resolve('ok');
-    const failCall = () => Promise.reject('ko');
 
     describe('closed circuit transitions', () => {
 
         const closedCircuit = ClosedCircuit.start();
 
-        it('should stay in closed state when a call succeed', async () => {
-            const stateMachine = new CircuitBreakerStateMachine<string>(closedCircuit, noop, noop);
+        it('should stay in closed state when a call succeed', () => {
+            const stateMachine = new CircuitBreakerStateMachine(closedCircuit, noop, noop);
 
-            const transition = await stateMachine.invoke(successCall);
+            const newStateMachine = stateMachine.transition('CallSucceed');
 
-            expect(transition.result).toBe('ok');
-            expect(transition.newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
+            expect(newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
         });
 
-        it('should stay in closed state when a call fails but the threshold is not reached', async () => {
+        it('should stay in closed state when a call fails but the threshold is not reached', () => {
 
             const isThresholdReached = () => false;
-            const stateMachine = new CircuitBreakerStateMachine<string>(closedCircuit, isThresholdReached, noop);
+            const stateMachine = new CircuitBreakerStateMachine(closedCircuit, isThresholdReached, noop);
 
-            const transition = await stateMachine.invoke(failCall);
+            const newStateMachine = stateMachine.transition('CallFailed');
 
-            expect(transition.result).toEqual(new Error('ko'));
-            expect(transition.newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
+            expect(newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
         });
 
-        it('should reset the circuit when a call succeed', async () => {
+        it('should reset the circuit when a call succeed', () => {
             const closedCircuitWithFails = new ClosedCircuit(10);
-            const stateMachine = new CircuitBreakerStateMachine<string>(closedCircuitWithFails, noop, noop);
+            const stateMachine = new CircuitBreakerStateMachine(closedCircuitWithFails, noop, noop);
 
-            const transition = await stateMachine.invoke(successCall);
+            const newStateMachine = stateMachine.transition('CallSucceed');
 
-            expect(transition.newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
-            expect(transition.newStateMachine.currentState).toMatchObject({failCount: 0});
+            expect(newStateMachine.currentState).toBeInstanceOf(ClosedCircuit)
+            expect(newStateMachine.currentState).toMatchObject({failCount: 0});
         });
 
-        it('should trip the circuit when threshold is reached', async () => {
+        it('should trip the circuit when threshold is reached', () => {
             const isThresholdReached = () => true;
-            const stateMachine = new CircuitBreakerStateMachine<string>(closedCircuit, isThresholdReached, noop, noop);
+            const stateMachine = new CircuitBreakerStateMachine(closedCircuit, isThresholdReached, noop);
 
-            const transition = await stateMachine.invoke(failCall);
+            const newStateMachine = stateMachine.transition('CallFailed');
 
-            expect(transition.result).toEqual(new Error('ko'));
-            expect(transition.newStateMachine.currentState).toBeInstanceOf(OpenCircuit);
+            expect(newStateMachine.currentState).toBeInstanceOf(OpenCircuit);
         });
     });
 
@@ -58,26 +53,20 @@ describe('Circuit breaker state machine', () => {
 
         it('should fail fast when reset timeout has not been exceeded', async () => {
             const isTimeoutReached = () => false;
-            const stateMachine = new CircuitBreakerStateMachine<string>(
-                new OpenCircuit(fixedDate), noop, isTimeoutReached
-            );
+            const stateMachine = new CircuitBreakerStateMachine(new OpenCircuit(fixedDate), noop, isTimeoutReached);
 
-            const transition = await stateMachine.invoke(successCall);
+            const newStateMachine = stateMachine.transition('CallSucceed');
 
-            expect(transition.result).toEqual(new Error('circuit-breaker-open'));
-            expect(transition.newStateMachine.currentState).toBeInstanceOf(OpenCircuit);
+            expect(newStateMachine.currentState).toBeInstanceOf(OpenCircuit);
         });
 
-        it('should enter to half-open state when reset timeout has been exceeded', async () => {
+        it('should enter to half-open state when reset timeout has been exceeded', () => {
             const isTimeoutReached = () => true;
-            const notify = jest.fn();
-            const stateMachine = new CircuitBreakerStateMachine<string>(
-                new OpenCircuit(fixedDate), noop, isTimeoutReached, notify
-            );
+            const stateMachine = new CircuitBreakerStateMachine(new OpenCircuit(fixedDate), noop, isTimeoutReached);
 
-            await stateMachine.invoke(successCall);
+            const newStateMachine = stateMachine.transition('BeforeCallSignal');
 
-            expect(notify).toHaveBeenNthCalledWith(1, expect.any(OpenCircuit), expect.any(HalfOpenCircuit));
+            expect(newStateMachine.currentState).toBeInstanceOf(HalfOpenCircuit);
         });
     });
 
@@ -85,34 +74,20 @@ describe('Circuit breaker state machine', () => {
 
         const fixedDate = new Date('1995-12-17T03:24:00');
 
-        it('should trip the circuit when try to reset fails', async () => {
-            const isTimeoutReached = () => true;
-            const notify = jest.fn();
-            const stateMachine = new CircuitBreakerStateMachine<string>(
-                new OpenCircuit(fixedDate), noop, isTimeoutReached, notify
-            );
+        it('should trip the circuit when try to reset fails', () => {
+            const stateMachine = new CircuitBreakerStateMachine(new HalfOpenCircuit(), noop, noop);
 
-            const transition = await stateMachine.invoke(failCall);
+            const newStateMachine = stateMachine.transition('CallFailed');
 
-            expect(transition.result).toEqual(new Error('ko'));
-            expect(transition.newStateMachine.currentState).toBeInstanceOf(OpenCircuit);
-            expect(notify).toHaveBeenNthCalledWith(1, expect.any(OpenCircuit), expect.any(HalfOpenCircuit));
-            expect(notify).toHaveBeenNthCalledWith(2, expect.any(HalfOpenCircuit), expect.any(OpenCircuit));
+            expect(newStateMachine.currentState).toBeInstanceOf(OpenCircuit);
         });
 
         it('should reset back to closed state when attempt to reset succeeds', async () => {
-            const isTimeoutReached = () => true;
-            const notify = jest.fn();
-            const stateMachine = new CircuitBreakerStateMachine<string>(
-                new OpenCircuit(fixedDate), noop, isTimeoutReached, notify
-            );
+            const stateMachine = new CircuitBreakerStateMachine(new HalfOpenCircuit(), noop, noop);
 
-            const transition = await stateMachine.invoke(successCall);
+            const newStateMachine = stateMachine.transition('CallSucceed');
 
-            expect(transition.result).toEqual('ok');
-            expect(transition.newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
-            expect(notify).toHaveBeenNthCalledWith(1, expect.any(OpenCircuit), expect.any(HalfOpenCircuit));
-            expect(notify).toHaveBeenNthCalledWith(2, expect.any(HalfOpenCircuit), expect.any(ClosedCircuit));
+            expect(newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
         });
     });
 });
