@@ -28,9 +28,6 @@ export default class CircuitBreaker {
         return new CircuitBreakerStateMachine(new ClosedCircuit(), isThresholdReached, isTimeoutReached);
     }
 
-    // diagram of concerns/ responsibilitites
-// https://github.com/resilience4j/resilience4j/blob/3665c70c7e256067597c61f83c22d83523e62e75/
-    // resilience4j-circuitbreaker/src/test/java/io/github/resilience4j/circuitbreaker/CircuitBreakerTest.java
     public protectFunction<A, B>(call: ((_: A) => B)): (_: A) => B {
         this.adquireCircuitBreaker(); // preventOverUse
         return (argument: A) => {
