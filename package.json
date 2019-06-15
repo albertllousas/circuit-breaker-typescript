@@ -2,10 +2,17 @@
   "name": "circuit-breaker-typescript",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "lib/circuit-breaker.js",
+  "types": "lib/circuit-breaker.d.ts",
+  "typings": "lib/circuit-breaker.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:albertllousas/circuit-breaker-typescript.git"
+  },
   "scripts": {
     "test": "jest",
     "build": "tsc",
+    "clean": "rm -rf lib",
     "lint": "tslint --project tsconfig.json"
   },
   "author": "albert.llousas@gmail.com",

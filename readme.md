@@ -2,21 +2,26 @@
 
 This project is a lightweight and easy-to-use circuit breaker, designed for typescript and functional programming.
 
+It has two different purposes:
+- A production ready circuit breaker for typescript
+- A tutorial to understand this useful resilience pattern through typescript
+
 ## Getting Started
 
-### Prerequisites
+### Why to use it
 
-What things you need to install the software and how to install them
+If this resilience pattern does not sounds familiar to you, take a look on these resources:
+- [Circuit breaker wikipedia](https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern)
+- [Circuit breaker - Martin Fowler](https://martinfowler.com/bliki/CircuitBreaker.html)
+- [Release It!](https://pragprog.com/book/mnee2/release-it-second-edition)
 
+### Install
+
+```bash
+npm circuit-breaker-typescript
 ```
-Give examples
-```
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+### How to Use It
 
 ```
 Give the example
