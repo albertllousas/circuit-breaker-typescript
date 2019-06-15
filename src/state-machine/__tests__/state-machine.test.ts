@@ -33,7 +33,7 @@ describe('Circuit breaker state machine', () => {
 
             const newStateMachine = stateMachine.transition('CallSucceed');
 
-            expect(newStateMachine.currentState).toBeInstanceOf(ClosedCircuit)
+            expect(newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
             expect(newStateMachine.currentState).toMatchObject({failCount: 0});
         });
 
@@ -45,6 +45,7 @@ describe('Circuit breaker state machine', () => {
 
             expect(newStateMachine.currentState).toBeInstanceOf(OpenCircuit);
         });
+
     });
 
     describe('open circuit transitions', () => {
@@ -72,8 +73,6 @@ describe('Circuit breaker state machine', () => {
 
     describe('open-closed circuit transitions', () => {
 
-        const fixedDate = new Date('1995-12-17T03:24:00');
-
         it('should trip the circuit when try to reset fails', () => {
             const stateMachine = new CircuitBreakerStateMachine(new HalfOpenCircuit(), noop, noop);
 
@@ -89,5 +88,29 @@ describe('Circuit breaker state machine', () => {
 
             expect(newStateMachine.currentState).toBeInstanceOf(ClosedCircuit);
         });
+    });
+
+    describe('failing fast', () => {
+
+        const fixedDate = new Date('1995-12-17T03:24:00');
+
+        it('should fail fast when circuit is in open state', () => {
+            const stateMachine = new CircuitBreakerStateMachine(new OpenCircuit(fixedDate), noop, noop);
+
+            expect(stateMachine.shouldFailFast()).toBeTruthy();
+        });
+
+        it('should not fail fast when circuit is in half open state', () => {
+            const stateMachine = new CircuitBreakerStateMachine(new HalfOpenCircuit(), noop, noop);
+
+            expect(stateMachine.shouldFailFast()).toBeFalsy();
+        });
+
+        it('should not fail fast when circuit is in closed state', () => {
+            const stateMachine = new CircuitBreakerStateMachine(new ClosedCircuit(), noop, noop);
+
+            expect(stateMachine.shouldFailFast()).toBeFalsy();
+        });
+
     });
 });
