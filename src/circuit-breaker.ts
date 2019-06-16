@@ -29,7 +29,7 @@ export default class CircuitBreaker {
     }
 
     public protectFunction<A, B>(call: ((_: A) => B)): (_: A) => B {
-        this.adquireCircuitBreaker(); // preventOverUse
+        this.adquireCircuitBreaker();
         return (argument: A) => {
             this.preCall();
             this.failFastIfRequired();
@@ -40,6 +40,27 @@ export default class CircuitBreaker {
             } catch (error) {
                 this.callFailed();
                 throw error;
+            }
+        };
+    }
+
+    public protectPromise<A>(lazyPromise: () => Promise<A>): () => Promise<A> {
+        this.adquireCircuitBreaker();
+        return () => {
+            this.preCall();
+            try {
+                this.failFastIfRequired();
+                return lazyPromise()
+                    .then(response => {
+                        this.callSucceed();
+                        return response;
+                    })
+                    .catch(error => {
+                        this.callFailed();
+                        throw error;
+                    });
+            } catch (error) {
+                return Promise.reject(error);
             }
         };
     }

@@ -22,14 +22,34 @@ npm circuit-breaker-typescript
 ```
 
 ### How to Use It
-Let's assume you have a function that you want to protect:
+
+#### Promises
+Let's assume you have an http call that sometimes fail and you want to fail fast gracefully without waiting for TCP 
+connection timeout:
+```typescript
+const unprotectedPromise = () => fetch(someUrl).then(response => response.json());
+```
+
+Protecting it is pretty straight forward:
+```typescript
+
+const circuitBreaker = new CircuitBreaker();
+
+const protectedPromise = circuitBreaker.protectPromise(unprotectedPromise);
+
+//normal use
+protectedPromise().then(...);
+```
+
+#### Functions
+You have a function that you want to protect:
 ```typescript
 const unprotectedFunction = (params: Params) => { 
     // side effects that can eventually fail recurrently 
     };
 ```
 
-Protecting it is pretty straight forward:
+Protecting it is similar to promises:
 ```typescript
 
 const circuitBreaker = new CircuitBreaker();
@@ -54,9 +74,9 @@ https://github.com/jike-engineering/circuit-breaker-ts
 
 ## Motivation and project break down
 
-## Circuit breaker diagram
+### Circuit breaker diagram
 
-## Components
+### Components
 
 ## Built With
 

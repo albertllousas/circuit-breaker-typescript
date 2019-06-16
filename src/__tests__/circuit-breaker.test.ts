@@ -53,4 +53,37 @@ describe('Circuit breaker', () => {
             expect(() => protectedFn('')).toThrowError('Boom');
         });
     });
+
+    describe('protecting a promise', () => {
+
+        it('should not fail fast when calls succeed', async () => {
+            const circuitBreaker = new CircuitBreaker({maxFailures: 1, resetTimeoutInMillis: 10});
+            const nonFailingPromise = Promise.resolve('ok');
+            const protectedPromise = circuitBreaker.protectPromise(() => nonFailingPromise);
+
+            await expect(protectedPromise()).resolves.toBe('ok');
+            await expect(protectedPromise()).resolves.toBe('ok');
+        });
+
+        it('should fail fast when max failures are reached', async () => {
+            const circuitBreaker = new CircuitBreaker({maxFailures: 1, resetTimeoutInMillis: 10000});
+            const failingPromise = Promise.reject('ko');
+            const protectedPromise = circuitBreaker.protectPromise(() => failingPromise);
+
+            await expect(protectedPromise()).rejects.toBe('ko');
+            await expect(protectedPromise()).rejects.toEqual(new Error('CircuitBreaker: fail-fast'));
+
+        });
+
+        it('should let the calls go through when timeout is reached after failing fast', async () => {
+            const circuitBreaker = new CircuitBreaker({maxFailures: 1, resetTimeoutInMillis: 100});
+            const failingPromise = Promise.reject('ko');
+            const protectedPromise = circuitBreaker.protectPromise(() => failingPromise);
+
+            await expect(protectedPromise()).rejects.toBe('ko');
+            await expect(protectedPromise()).rejects.toEqual(new Error('CircuitBreaker: fail-fast'));
+            await wait(200);
+            await expect(protectedPromise()).rejects.toBe('ko');
+        });
+    });
 });
