@@ -1,3 +1,5 @@
+promise and fallbacks
+
 https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c
 https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html
 
@@ -38,6 +40,8 @@ basics estate machine
 // https://xlinux.nist.gov/dads/HTML/finiteStateMachine.html
 // https://github.com/resilience4j/resilience4j/blob/ab0d8a0c2940f7f8af6f4fc9392cc539662290b8/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/internal/CircuitBreakerStateMachine.java
 
+
+https://emaxteam.com/circuit-breaker-breakdown/
 
    // diagram of concerns/ responsibilitites
 // https://github.com/resilience4j/resilience4j/blob/3665c70c7e256067597c61f83c22d83523e62e75/

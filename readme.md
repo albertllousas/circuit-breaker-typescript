@@ -22,42 +22,41 @@ npm circuit-breaker-typescript
 ```
 
 ### How to Use It
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
+Let's assume you have a function that you want to protect:
+```typescript
+const unprotectedFunction = (params: Params) => { 
+    // side effects that can eventually fail recurrently 
+    };
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Protecting it is pretty straight forward:
+```typescript
 
-## Running the tests
+const circuitBreaker = new CircuitBreaker();
 
-Explain how to run the automated tests for this system
+const protectedFunction = circuitBreaker.protectFunction(unprotectedFunction);
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+//normal use
+protectedFunction(params)
 ```
 
-### And coding style tests
+### API
 
-Explain what these tests test and why
+https://github.com/jike-engineering/circuit-breaker-ts
 
-```
-Give an example
-```
+## Local development
 
-## Deployment
+### Prerequisites
 
-Add additional notes about how to deploy this on a live system
+### Install 
+
+### Running the tests
+
+## Motivation and project break down
+
+## Circuit breaker diagram
+
+## Components
 
 ## Built With
 
