@@ -120,6 +120,12 @@ The main purpose of circuit breakers in software world is to provide the capabil
  and fail-fast in order to handle the errors quickly and gracefully without waiting for problems. Another good aspect 
  about them is that they prevent to cascade problems to another components/systems because they act as a walls when 
  they are open.
+ 
+### Circuit breaker state diagram
+
+<p align="center">
+  <img src="misc/circuit-breaker-state-diagram.png">
+</p>
 
 ### Component diagram
 
