@@ -104,7 +104,24 @@ Please install `npm` or `yarn`.
 
 ## Motivation and project break down
 
-### Circuit breaker diagram
+The motivation of this project was to understand this resilience pattern and provide a ready-for-production 
+implementation in a some programming language. 
+
+These are some of the aspects that have been used or taken in account to design the solution:
+
+- Language: **typescript**
+- Functional programming in mind (Immutability, lambdas ...)
+- Finite state machines
+ 
+ 
+### Circuit breakers
+
+The main purpose of circuit breakers in software world is to provide the capability to detect failures in your system
+ and fail-fast in order to handle the errors quickly and gracefully without waiting for problems. Another good aspect 
+ about them is that they prevent to cascade problems to another components/systems because they act as a walls when 
+ they are open.
+
+### Component diagram
 
 <p align="center">
   <img src="misc/component-diagram.png">
@@ -118,7 +135,7 @@ number of states at any given time.
 - [Circuit breaker](src/circuit-breaker.ts): Main class of the application, it is the public api, controls the general 
 flow and keeps the state machine.
 
-### Circuit breaker flow
+### Flows
 
 #### Happy path flow 
 <p align="center">

@@ -46,5 +46,8 @@ https://emaxteam.com/circuit-breaker-breakdown/
    // diagram of concerns/ responsibilitites
 // https://github.com/resilience4j/resilience4j/blob/3665c70c7e256067597c61f83c22d83523e62e75/
     // resilience4j-circuitbreaker/src/test/java/io/github/resilience4j/circuitbreaker/CircuitBreakerTest.java
+    
+    
+    fallbacks
 
 
