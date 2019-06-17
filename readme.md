@@ -101,13 +101,13 @@ Please install `npm` or `yarn`.
 
 ### Circuit breaker diagram
 
-- (States)[src/state-machine/CircuitBreakerState.ts]: The states in which the circuit can be `Closed`, `Open` or 
+- [States](src/state-machine/states.ts): The states in which the circuit can be `Closed`, `Open` or 
 `HalfOpen`.
-- (State machine)[src/state-machine/CircuitBreakerStateMachine.ts]: The *immutable* finite state machine that controls 
+- [State machine](src/state-machine/state-machine.ts): The *immutable* finite state machine that controls 
 the 
 transitions between the different states in response to some external inputs. It will be in exactly one of a finite 
 number of states at any given time. 
-- (Circuit breaker)[src/CircuitBreaker.ts]: Main class of the application, it is the public api, controls the general 
+- [Circuit breaker](src/circuit-breaker.ts): Main class of the application, it is the public api, controls the general 
 flow and keeps the state machine.
 
 ### Components
