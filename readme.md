@@ -122,7 +122,7 @@ flow and keeps the state machine.
 
 #### Happy path flow 
 <p align="center">
-  <img src="misc/happy-path-flow.png">
+  <img src="misc/non-failing-case-diagram.png">
 </p>
 
 
