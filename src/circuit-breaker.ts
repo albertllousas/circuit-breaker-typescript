@@ -29,7 +29,7 @@ export default class CircuitBreaker {
     }
 
     public protectFunction<A, B>(call: ((_: A) => B)): (_: A) => B {
-        this.adquireCircuitBreaker();
+        this.acquireCircuitBreaker();
         return (argument: A) => {
             this.preCall();
             this.failFastIfRequired();
@@ -45,7 +45,7 @@ export default class CircuitBreaker {
     }
 
     public protectPromise<A>(lazyPromise: () => Promise<A>): () => Promise<A> {
-        this.adquireCircuitBreaker();
+        this.acquireCircuitBreaker();
         return () => {
             this.preCall();
             try {
@@ -65,9 +65,7 @@ export default class CircuitBreaker {
         };
     }
 
-    // decoratePromise
-
-    private adquireCircuitBreaker() {
+    private acquireCircuitBreaker() {
         if (this.inUse) {
             throw new Error('CircuitBreaker: already-in-use');
         } else {

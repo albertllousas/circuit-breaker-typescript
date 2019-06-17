@@ -39,7 +39,7 @@ basics estate machine
 // http://dynamicfsm.blogspot.com/
 // https://xlinux.nist.gov/dads/HTML/finiteStateMachine.html
 // https://github.com/resilience4j/resilience4j/blob/ab0d8a0c2940f7f8af6f4fc9392cc539662290b8/resilience4j-circuitbreaker/src/main/java/io/github/resilience4j/circuitbreaker/internal/CircuitBreakerStateMachine.java
-
+https://www.javaworld.com/article/2824163/stability-patterns-applied-in-a-restful-architecture.html?page=2
 
 https://emaxteam.com/circuit-breaker-breakdown/
 

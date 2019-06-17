@@ -18,14 +18,14 @@ If this resilience pattern does not sounds familiar to you, take a look on these
 ### Install
 
 ```bash
-npm circuit-breaker-typescript
+npm i circuit-breaker-typescript
 ```
 
 ### How to Use It
 
 #### Promises
-Let's assume you have an http call that sometimes fail and you want to fail fast gracefully without waiting for TCP 
-connection timeout:
+Let's assume you have an http call and you want to fail-fast gracefully without waiting for TCP connection timeout in
+ case of the service eventually is not available:
 ```typescript
 const unprotectedPromise = () => fetch(someUrl).then(response => response.json());
 ```
@@ -49,7 +49,7 @@ const unprotectedFunction = (params: Params) => {
     };
 ```
 
-Protecting it is similar to promises:
+Protecting it:
 ```typescript
 
 const circuitBreaker = new CircuitBreaker();
@@ -60,50 +60,45 @@ const protectedFunction = circuitBreaker.protectFunction(unprotectedFunction);
 protectedFunction(params)
 ```
 
-### API
+### Custom params
 
-https://github.com/jike-engineering/circuit-breaker-ts
+#### CircuitBreaker(config: CircuitBreakerConfig)
+
+Create a new instance of a circuit breaker. It accepts the following config options:
+
+##### CircuitBreakerConfig: maxFailures
+
+Number of errors after the circuit trips to open and starts short-circuiting requests and failing-fast.
+
+*Default Value:* 5
+
+##### CircuitBreakerConfig: resetTimeoutInMillis
+
+Time in milliseconds in which after tripping to open the circuit will remain failing fast.
+
+*Default Value:* 1000
+
+### Failing-fast
+
+Circuit breaker will fail fast when any call enters to it during the open period, in these cases it will throw or return
+an error `Error('CircuitBreaker: fail-fast')`
 
 ## Local development
 
 ### Prerequisites
 
+Please install `npm` or `yarn`.
+
 ### Install 
 
+`yarn install`
+
 ### Running the tests
+
+`yarn test`
 
 ## Motivation and project break down
 
 ### Circuit breaker diagram
 
 ### Components
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
