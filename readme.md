@@ -130,7 +130,7 @@ The main purpose of circuit breakers in software world is to provide the capabil
 ### Component diagram
 
 <p align="center">
-  <img src="misc/component-diagram.png">
+  <img src="misc/components.png">
 </p>
 
 - [States](src/state-machine/states.ts): The states in which the circuit can be `Closed`, `Open` or 
