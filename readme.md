@@ -78,6 +78,11 @@ Time in milliseconds in which after tripping to open the circuit will remain fai
 
 *Default Value:* 1000
 
+```typescript
+
+const circuitBreaker = new CircuitBreaker({maxFailures: 10, resetTimeoutInMillis: 10000});
+````
+
 ### Failing-fast
 
 Circuit breaker will fail fast when any call enters to it during the open period, in these cases it will throw or return
@@ -114,5 +119,10 @@ number of states at any given time.
 flow and keeps the state machine.
 
 ### Circuit breaker flow
+
+#### Happy path flow 
+<p align="center">
+  <img src="misc/happy-path-flow.png">
+</p>
 
 
