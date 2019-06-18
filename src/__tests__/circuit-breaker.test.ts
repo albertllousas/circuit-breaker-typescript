@@ -29,7 +29,7 @@ describe('Circuit breaker', () => {
         });
 
         it('should fail fast when max failures are reached', () => {
-            const circuitBreaker = new CircuitBreaker({maxFailures: 1, resetTimeoutInMillis: 10000});
+            const circuitBreaker = new CircuitBreaker({maxFailures: 1, resetTimeoutInMillis: 10000}, () => new Date());
             const failingFunction = (_: any) => {
                 throw new Error('Boom');
             };

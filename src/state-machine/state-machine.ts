@@ -16,7 +16,6 @@ class CircuitBreakerStateMachine {
     ) {
     }
 
-    // take out this
     private matched = (state: CircuitBreakerState) => ({
         on: () => this.matched(state),
         transition: () => this.transitionTo(state),

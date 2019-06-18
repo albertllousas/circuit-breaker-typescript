@@ -100,6 +100,8 @@ Please install `npm` or `yarn`.
 
 ### Running the tests
 
+Tests are configured to fail if coverage go below 90%, you can see the report just running the tests:
+
 `yarn test`
 
 ## Motivation and project break down
