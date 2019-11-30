@@ -1,6 +1,6 @@
 {
   "name": "circuit-breaker-typescript",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lib/circuit-breaker.js",
   "types": "lib/circuit-breaker.d.ts",
