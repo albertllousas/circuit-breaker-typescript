@@ -198,6 +198,9 @@ flow and keeps the state machine.
 
 ## TODO
 
+- Improve Circuit Breaker Config with a builder
+- Create configuration to accept predicates to decide wheter a result of a function should be considered as a failure. 
+Then the library could be used with monads like Either
 - Add support for metrics/notify
 - Add support for fallbacks 
 
